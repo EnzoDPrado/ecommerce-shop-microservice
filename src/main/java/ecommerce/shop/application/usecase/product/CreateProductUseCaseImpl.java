@@ -22,8 +22,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
 
     @Transactional
     public CreateProductResponseDTO execute(CreateProductInputDTO input) {
-        this.validateProductInput(input);
-
         final var product = this.buildProduct(input);
 
         final var createdProduct = this.createProductRepository.create(product);
@@ -39,31 +37,6 @@ public class CreateProductUseCaseImpl implements CreateProductUseCase {
                 .price(input.price())
                 .createdAt(LocalDateTime.now())
                 .build();
-    }
-
-    private void validateProductInput(CreateProductInputDTO input) {
-        // Validação de nome
-        if (input.name() == null || input.name().trim().isEmpty()) {
-            throw new IllegalArgumentException("Product name cannot be empty");
-        }
-
-        if (input.name().length() < 3 || input.name().length() > 100) {
-            throw new IllegalArgumentException("Product name must be between 3 and 100 characters");
-        }
-
-        // Validação de descrição
-        if (input.description() != null && input.description().length() > 255) {
-            throw new IllegalArgumentException("Product description cannot exceed 255 characters");
-        }
-
-        // Validação de preço
-        if (input.price() == null) {
-            throw new IllegalArgumentException("Product price cannot be null");
-        }
-
-        if (input.price().compareTo(java.math.BigDecimal.ZERO) <= 0) {
-            throw new IllegalArgumentException("Product price must be greater than zero");
-        }
     }
 }
 
