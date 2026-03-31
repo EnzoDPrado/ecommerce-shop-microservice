@@ -35,3 +35,26 @@ api:
       issuer: ${JWT_ISSUER:secret19339120}
 server:
   port: 8080
+springdoc:
+  swagger-ui:
+    title: Shop API
+    version: 1.0.0
+    tags-sorter: alpha
+    operations-sorter: method
+    disable-swagger-default-url: true
+    path: /docs
+    enabled: true
+  api-docs:
+    path: /docs
+    enabled: true
+  swagger-config:
+    responses:
+      error:
+        401: "Invalid credentials"
+        400: "Problem with the data in the request"
+        403: "Request violates some authorization rule"
+        404: "Resource requested not found"
+        409: "Duplicated Resource"
+        422: "Request violates some business rule"
+        500: "Some unexpected error has occurred"
+        502: "Service is unavailable at the moment"

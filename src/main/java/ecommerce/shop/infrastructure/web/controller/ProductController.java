@@ -21,7 +21,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("/products")
 @RequiredArgsConstructor
-public class ProductController {
+public class ProductController implements ProductControllerSpecs {
 
     private final CreateProductUseCase createProductUseCase;
     private final ListProductsUseCase listProductsUseCase;
