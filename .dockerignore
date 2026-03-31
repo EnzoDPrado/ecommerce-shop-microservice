@@ -1,0 +1,14 @@
+target/
+.git/
+.gitignore
+.DS_Store
+*.md
+node_modules/
+.gradle/
+.idea/
+*.iml
+.env
+.env.local
+mvnw.cmd
+README.md
+Dockerfile

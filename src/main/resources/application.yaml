@@ -1,10 +1,10 @@
 spring:
   application:
-    name: workspace
+    name: shop
   datasource:
-    url: jdbc:postgresql://localhost:5432/workspace_db
-    username: workspace
-    password: root-workspace-123
+    url: jdbc:postgresql://localhost:5432/shop_db
+    username: shop
+    password: root-shop-123
     driver-class-name: org.postgresql.Driver
     hikari:
       pool-name: CHTHikariPool
