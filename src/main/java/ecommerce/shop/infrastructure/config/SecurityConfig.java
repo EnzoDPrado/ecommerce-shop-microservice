@@ -29,6 +29,13 @@ public class SecurityConfig {
             "/products"
     };
 
+    private static final String[] ADMIN_PUT_ENDPOINTS = {
+            "/products/*"
+    };
+
+    private static final String[] ADMIN_DELETE_ENDPOINTS = {
+            "/products/*"
+    };
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -38,6 +45,8 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ADMIN_POST_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, ADMIN_PUT_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.POST, ADMIN_DELETE_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
