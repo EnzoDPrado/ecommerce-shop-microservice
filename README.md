@@ -1,1 +1,1 @@
-# java-workspace-template
+# Shop microservice
