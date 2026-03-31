@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ecommerce.shop.domain.exception.BusinessException;
+import ecommerce.shop.domain.exception.EntityNotFoundException;
 
 @ControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -15,5 +16,12 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         final var exception = new ErrorResponse(HttpStatus.BAD_REQUEST, businessException.getMessage(), null);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
+    }
+
+    @ExceptionHandler(value = {EntityNotFoundException.class})
+    private ResponseEntity<ErrorResponse> entityNotFoundExceptionHandler(EntityNotFoundException entityNotFoundException) {
+        final var exception = new ErrorResponse(HttpStatus.NOT_FOUND, entityNotFoundException.getMessage(), null);
+
+        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception);
     }
 }

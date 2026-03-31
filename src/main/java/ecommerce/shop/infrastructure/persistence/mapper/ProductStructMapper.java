@@ -2,10 +2,10 @@ package ecommerce.shop.infrastructure.persistence.mapper;
 
 import ecommerce.shop.application.dto.product.response.CreateProductResponseDTO;
 import ecommerce.shop.application.dto.product.response.ListProductsResponseDTO.ProductDTO;
+import ecommerce.shop.application.dto.product.response.UpdateProductResponseDTO;
 import ecommerce.shop.domain.entity.Product;
 import ecommerce.shop.infrastructure.persistence.entity.ProductJpaEntity;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 
 @Mapper(componentModel = "spring")
 public interface ProductStructMapper {
@@ -17,5 +17,7 @@ public interface ProductStructMapper {
     CreateProductResponseDTO toCreateProductResponseDTO(Product product);
 
     ProductDTO toProductDTO(Product product);
+
+    UpdateProductResponseDTO toUpdateProductResponseDTO(Product product);
 }
 
