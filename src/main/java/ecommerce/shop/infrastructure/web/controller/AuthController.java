@@ -1,6 +1,7 @@
 package ecommerce.shop.infrastructure.web.controller;
 
 import ecommerce.shop.application.dto.auth.request.AuthenticationDTO;
+import ecommerce.shop.application.dto.auth.response.LoginResponseDTO;
 import ecommerce.shop.domain.usecase.auth.LoginUseCase;
 import ecommerce.shop.infrastructure.web.specs.AuthControllerSpecs;
 import jakarta.validation.Valid;
@@ -19,7 +20,7 @@ public class AuthController implements AuthControllerSpecs {
     private final LoginUseCase loginUseCase;
 
     @PostMapping
-    public ResponseEntity login(@RequestBody @Valid AuthenticationDTO input){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO input){
         final var response = this.loginUseCase.execute(input);
 
         return ResponseEntity.ok(response);

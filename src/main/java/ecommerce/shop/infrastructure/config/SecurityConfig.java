@@ -20,8 +20,15 @@ public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
 
+    private static final String[] SWAGGER_RESOURCES = {
+            "/swagger-ui/**",
+            "/swagger-ui.html",
+            "/v3/api-docs/**",
+            "/docs/**"
+    };
+
     private static final String[] PUBLIC_POST_ENDPOINTS = {
-            "/login",
+            "/auth",
             "/users"
     };
 
@@ -45,8 +52,9 @@ public class SecurityConfig {
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ADMIN_POST_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, ADMIN_PUT_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
-                        .requestMatchers(HttpMethod.POST, ADMIN_DELETE_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.PUT, ADMIN_PUT_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(HttpMethod.DELETE, ADMIN_DELETE_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
+                        .requestMatchers(SWAGGER_RESOURCES).permitAll()
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)

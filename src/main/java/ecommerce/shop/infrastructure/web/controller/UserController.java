@@ -19,7 +19,7 @@ public class UserController implements UserControllerSpecs {
     private final CreateUserUseCase createUserUseCase;
 
     @PostMapping
-    public ResponseEntity createUser(@RequestBody @Valid CreateUserInputDTO input) {
+    public ResponseEntity<Void> createUser(@RequestBody @Valid CreateUserInputDTO input) {
         this.createUserUseCase.execute(input);
 
         return ResponseEntity.status(HttpStatus.CREATED).build();

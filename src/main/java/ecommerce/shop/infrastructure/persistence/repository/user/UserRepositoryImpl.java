@@ -2,11 +2,11 @@ package ecommerce.shop.infrastructure.persistence.repository.user;
 
 import ecommerce.shop.domain.entity.User;
 import ecommerce.shop.domain.repository.user.CreateUserRepository;
+import org.springframework.security.core.userdetails.UserDetails;
 import ecommerce.shop.domain.repository.user.ExistsUserByEmailRepository;
 import ecommerce.shop.domain.repository.user.GetUserDetailsByEmailRepository;
 import ecommerce.shop.infrastructure.persistence.mapper.UserStructMapper;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,6 +26,7 @@ public class UserRepositoryImpl implements ExistsUserByEmailRepository, CreateUs
     }
 
     public UserDetails getUserDetailsByEmail(String email) {
-        return this.userRepository.findByEmail(email);
+        return this.userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found: " + email));
     }
 }

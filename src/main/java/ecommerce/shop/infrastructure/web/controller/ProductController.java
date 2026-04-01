@@ -10,6 +10,7 @@ import ecommerce.shop.domain.usecase.product.CreateProductUseCase;
 import ecommerce.shop.domain.usecase.product.DeleteProductUseCase;
 import ecommerce.shop.domain.usecase.product.ListProductsUseCase;
 import ecommerce.shop.domain.usecase.product.UpdateProductUseCase;
+import ecommerce.shop.infrastructure.web.specs.ProductControllerSpecs;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -28,6 +29,7 @@ public class ProductController implements ProductControllerSpecs {
     private final UpdateProductUseCase updateProductUseCase;
     private final DeleteProductUseCase deleteProductUseCase;
 
+    @Override
     @PostMapping
     public ResponseEntity<CreateProductResponseDTO> createProduct(
             @RequestBody @Valid CreateProductInputDTO input) {
@@ -37,6 +39,7 @@ public class ProductController implements ProductControllerSpecs {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @Override
     @GetMapping
     public ResponseEntity<ListProductsResponseDTO> listProducts(
             @RequestParam(required = false) String name,
@@ -49,6 +52,7 @@ public class ProductController implements ProductControllerSpecs {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @PutMapping("/{id}")
     public ResponseEntity<UpdateProductResponseDTO> updateProduct(
             @PathVariable UUID id,
@@ -60,6 +64,7 @@ public class ProductController implements ProductControllerSpecs {
         return ResponseEntity.ok(response);
     }
 
+    @Override
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteProduct(
             @PathVariable UUID id) {
@@ -69,4 +74,3 @@ public class ProductController implements ProductControllerSpecs {
         return ResponseEntity.noContent().build();
     }
 }
-
