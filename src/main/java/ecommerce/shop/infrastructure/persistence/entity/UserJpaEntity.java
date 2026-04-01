@@ -70,20 +70,5 @@ public class UserJpaEntity implements UserDetails {
     public boolean isEnabled() {
         return Objects.isNull(this.deletedAt);
     }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
 }
 

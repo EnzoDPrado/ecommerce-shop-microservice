@@ -2,6 +2,8 @@ package ecommerce.shop.domain.repository.user;
 
 import org.springframework.security.core.userdetails.UserDetails;
 
+import java.util.Optional;
+
 public interface GetUserDetailsByEmailRepository {
-    UserDetails getUserDetailsByEmail(String email);
+    Optional<UserDetails> getUserDetailsByEmail(String email);
 }
