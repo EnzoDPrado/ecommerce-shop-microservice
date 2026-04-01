@@ -1,9 +1,8 @@
 package ecommerce.shop.infrastructure.persistence.repository.user;
 
 import ecommerce.shop.domain.entity.User;
-import ecommerce.shop.domain.exception.EntityNotFoundException;
 import ecommerce.shop.domain.repository.user.CreateUserRepository;
-import ecommerce.shop.infrastructure.persistence.entity.UserJpaEntity;
+import ecommerce.shop.domain.repository.user.FindUserByEmailRepository;
 import org.springframework.security.core.userdetails.UserDetails;
 import ecommerce.shop.domain.repository.user.ExistsUserByEmailRepository;
 import ecommerce.shop.domain.repository.user.GetUserDetailsByEmailRepository;
@@ -15,7 +14,12 @@ import java.util.Optional;
 
 @Repository
 @RequiredArgsConstructor
-public class UserRepositoryImpl implements ExistsUserByEmailRepository, CreateUserRepository, GetUserDetailsByEmailRepository {
+public class UserRepositoryImpl implements
+        ExistsUserByEmailRepository,
+        CreateUserRepository,
+        GetUserDetailsByEmailRepository,
+        FindUserByEmailRepository {
+
     private final UserJpaRepository userRepository;
     private final UserStructMapper userStructMapper;
 
@@ -31,6 +35,12 @@ public class UserRepositoryImpl implements ExistsUserByEmailRepository, CreateUs
 
     public Optional<UserDetails> getUserDetailsByEmail(String email) {
         return this.userRepository.findByEmail(email)
-                .map(userJpaEntity -> (UserDetails) userJpaEntity);
+                .map(userJpaEntity -> userJpaEntity);
+    }
+
+    @Override
+    public Optional<User> findByEmail(String email) {
+        return this.userRepository.findByEmail(email)
+                .map(this.userStructMapper::toDomainUser);
     }
 }

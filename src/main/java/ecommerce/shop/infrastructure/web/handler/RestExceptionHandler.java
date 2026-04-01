@@ -1,17 +1,20 @@
 package ecommerce.shop.infrastructure.web.handler;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.MethodArgumentNotValidException;
-import org.springframework.web.bind.annotation.ControllerAdvice;
-import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 import ecommerce.shop.domain.exception.BusinessException;
 import ecommerce.shop.domain.exception.EntityNotFoundException;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.context.request.WebRequest;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 import java.util.HashMap;
 
-@ControllerAdvice
+@RestControllerAdvice
 public class RestExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(value = {BusinessException.class})
@@ -28,15 +31,25 @@ public class RestExceptionHandler extends ResponseEntityExceptionHandler {
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(exception);
     }
 
-    @ExceptionHandler(value = {MethodArgumentNotValidException.class})
-    private ResponseEntity<ErrorResponse> methodArgumentNotValidHandler(MethodArgumentNotValidException ex) {
-        final var errors = new HashMap<String, String>();
+    @Override
+    protected ResponseEntity<Object> handleMethodArgumentNotValid(
+            MethodArgumentNotValidException ex,
+            HttpHeaders headers,
+            HttpStatusCode status,
+            WebRequest request) {
+
+        var errors = new HashMap<String, String>();
+
         ex.getBindingResult().getFieldErrors()
                 .forEach(error -> errors.put(error.getField(), error.getDefaultMessage()));
 
-        final var exception = new ErrorResponse(HttpStatus.BAD_REQUEST, "Validation failed", errors);
+        var body = new ErrorResponse(
+                HttpStatus.BAD_REQUEST,
+                "Validation failed",
+                errors
+        );
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(exception);
+        return ResponseEntity.badRequest().body(body);
     }
 
     @ExceptionHandler(value = {Exception.class})
