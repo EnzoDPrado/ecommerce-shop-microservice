@@ -16,12 +16,16 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import ecommerce.shop.infrastructure.security.SecurityFilter;
+import ecommerce.shop.infrastructure.security.CustomAuthenticationEntryPoint;
+import ecommerce.shop.infrastructure.security.CustomAccessDeniedHandler;
 
 @Configuration
 @RequiredArgsConstructor
 public class SecurityConfig {
 
     private final SecurityFilter securityFilter;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
+    private final CustomAccessDeniedHandler customAccessDeniedHandler;
 
     private static final String[] SWAGGER_RESOURCES = {
             "/swagger-ui/**",
@@ -52,6 +56,10 @@ public class SecurityConfig {
         return http
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+                .exceptionHandling(exception -> exception
+                        .authenticationEntryPoint(customAuthenticationEntryPoint)
+                        .accessDeniedHandler(customAccessDeniedHandler)
+                )
                 .authorizeHttpRequests(authz -> authz
                         .requestMatchers(HttpMethod.POST, PUBLIC_POST_ENDPOINTS).permitAll()
                         .requestMatchers(HttpMethod.POST, ADMIN_POST_ENDPOINTS).hasAuthority(UserRole.ADMIN.name())
